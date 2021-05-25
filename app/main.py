@@ -27,7 +27,7 @@ opts.add_argument('--no-sandbox')
 opts.add_argument('--lang=en_US') 
 opts.add_argument('--disable-blink-features=AutomationControlled')
 opts.add_argument('--headless')
-opts.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36')
+opts.add_argument('--user-agent=User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0", "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.5", "Accept-Encoding": "gzip, deflate", "DNT": "1", "Connection": "close", "Upgrade-Insecure-Requests": "1"')
 opts.add_argument('--disable-dev-shm-usage')
 
 chrome_driver = os.getcwd() +"/linux_chromedriver"
