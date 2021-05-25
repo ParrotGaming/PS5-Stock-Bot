@@ -158,7 +158,7 @@ async def scrape_gamestop():
 
 @tasks.loop(seconds=30)
 async def scrape():
-    # await scrape_target()
+    await scrape_target()
     await scrape_gamestop()
     await scrape_best_buy()
     time.sleep(20)
