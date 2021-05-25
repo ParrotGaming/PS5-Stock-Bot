@@ -1,0 +1,5 @@
+.env
+selenium-test.py
+venv/
+.DS_Store
+chromedriver
