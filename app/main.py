@@ -127,16 +127,20 @@ async def scrape_gamestop():
 
     sold_out = soup.find_all("button", {"data-pid": "11108140"})
 
-    if sold_out[0].text != "Not Available":
-        print("(GameStop) IN STOCK!!!!!\n\n")
-        if gamestop_status == False:
-            await update_status(3, True)
-            gamestop_status = True
-    else:
-        print("(GameStop) sold out :(\n\n")
-        if gamestop_status == True:
-            await update_status(3, False)
-            gamestop_status = False
+    try:
+        if sold_out[0].text != "Not Available":
+            print("(GameStop) IN STOCK!!!!!\n\n")
+            if gamestop_status == False:
+                await update_status(3, True)
+                gamestop_status = True
+        else:
+            print("(GameStop) sold out :(\n\n")
+            if gamestop_status == True:
+                await update_status(3, False)
+                gamestop_status = False
+    except e:
+        driver.save_screenshot("screenshot.png")
+        bot.get_channel(846860248865177630).send(file=discord.File('screenshot.png'))
 
 @tasks.loop(seconds=30)
 async def scrape():
