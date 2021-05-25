@@ -100,9 +100,11 @@ async def scrape_best_buy():
 
     driver.delete_all_cookies()
 
-    driver.get("https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
+    driver.get("https://www.bestbuy.com/")
 
     time.sleep(5)
+
+    driver.get("https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
 
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
@@ -129,9 +131,11 @@ async def scrape_gamestop():
 
     driver.delete_all_cookies()
 
-    driver.get("https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html")
+    driver.get("https://www.gamestop.com/")
 
     time.sleep(5)
+
+    driver.get("https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html")
 
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
@@ -155,7 +159,7 @@ async def scrape_gamestop():
 @tasks.loop(seconds=30)
 async def scrape():
     # await scrape_target()
-    # await scrape_gamestop()
+    await scrape_gamestop()
     await scrape_best_buy()
     time.sleep(20)
 
