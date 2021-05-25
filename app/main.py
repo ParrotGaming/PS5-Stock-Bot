@@ -30,7 +30,7 @@ opts.add_argument('--headless')
 opts.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36')
 opts.add_argument('--disable-dev-shm-usage')
 
-chrome_driver = os.getcwd() +"/chromedriver"
+chrome_driver = os.getcwd() +"/linux_chromedriver"
 
 driver = webdriver.Chrome(options=opts, executable_path=chrome_driver)
 
