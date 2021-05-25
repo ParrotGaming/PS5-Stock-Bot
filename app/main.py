@@ -98,6 +98,8 @@ async def scrape_best_buy():
 
     driver.get("https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
 
+    time.sleep(5)
+
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
 
@@ -122,25 +124,23 @@ async def scrape_gamestop():
 
     driver.get("https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html")
 
+    time.sleep(5)
+
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
 
     sold_out = soup.find_all("button", {"data-pid": "11108140"})
 
-    try:
-        if sold_out[0].text != "Not Available":
-            print("(GameStop) IN STOCK!!!!!\n\n")
-            if gamestop_status == False:
-                await update_status(3, True)
-                gamestop_status = True
-        else:
-            print("(GameStop) sold out :(\n\n")
-            if gamestop_status == True:
-                await update_status(3, False)
-                gamestop_status = False
-    except e:
-        driver.save_screenshot("screenshot.png")
-        bot.get_channel(846860248865177630).send(file=discord.File('screenshot.png'))
+    if sold_out[0].text != "Not Available":
+        print("(GameStop) IN STOCK!!!!!\n\n")
+        if gamestop_status == False:
+            await update_status(3, True)
+            gamestop_status = True
+    else:
+        print("(GameStop) sold out :(\n\n")
+        if gamestop_status == True:
+            await update_status(3, False)
+            gamestop_status = False
 
 @tasks.loop(seconds=30)
 async def scrape():
