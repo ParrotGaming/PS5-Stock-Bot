@@ -80,9 +80,6 @@ async def scrape_target():
 
     sold_out = soup.find_all("div", {"data-test": "soldOutBlock"})
     
-    driver.save_screenshot("screenshot.png")
-    await bot.get_channel(846860248865177630).send(file=discord.File('screenshot.png'))
-    
     if not sold_out:
         print("(Target) IN STOCK!!!!!\n\n")
         if target_status == False:
@@ -110,9 +107,6 @@ async def scrape_best_buy():
     soup = BeautifulSoup(soup_file, 'html.parser')
 
     sold_out = soup.find_all("button", {"class": "add-to-cart-button"})
-
-    driver.save_screenshot("screenshot.png")
-    await bot.get_channel(846860248865177630).send(file=discord.File('screenshot.png'))
 
     if sold_out[0].text != "Sold Out":
         print("(BestBuy) IN STOCK!!!!!\n\n")
@@ -142,9 +136,6 @@ async def scrape_gamestop():
 
     sold_out = soup.find_all("button", {"data-pid": "11108140"})
 
-    driver.save_screenshot("screenshot.png")
-    await bot.get_channel(846860248865177630).send(file=discord.File('screenshot.png'))
-    
     if sold_out[0].text != "Not Available":
         print("(GameStop) IN STOCK!!!!!\n\n")
         if gamestop_status == False:
