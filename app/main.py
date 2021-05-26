@@ -8,6 +8,7 @@ from discord.ext import tasks
 from discord.ext.commands import Bot
 from bs4 import BeautifulSoup, re
 import time
+import asyncio
 import random
 
 target_status = True
@@ -73,7 +74,7 @@ async def scrape_target():
 
     driver.get("https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596")
 
-    time.sleep(5)
+    await asyncio.sleep(5)
 
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
@@ -99,7 +100,7 @@ async def scrape_best_buy():
 
     driver.get("https://www.bestbuy.com/")
 
-    time.sleep(5)
+    await asyncio.sleep(5)
 
     driver.get("https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
 
@@ -127,7 +128,7 @@ async def scrape_gamestop():
 
     driver.get("https://www.gamestop.com/")
 
-    time.sleep(5)
+    await asyncio.sleep(5)
 
     driver.get("https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html")
 
@@ -152,7 +153,7 @@ async def scrape():
     await scrape_target()
     await scrape_gamestop()
     await scrape_best_buy()
-    time.sleep(20)
+    await asyncio.sleep(20)
 
 @bot.event
 async def on_ready():
