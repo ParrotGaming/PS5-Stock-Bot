@@ -153,8 +153,8 @@ async def scrape():
     await scrape_target()
     await scrape_gamestop()
     await scrape_best_buy()
-    await asyncio.sleep(20)
     await bot.get_channel(846905034422878258).send("All Trackers Online")
+    await asyncio.sleep(20)
 
 @bot.event
 async def on_ready():
