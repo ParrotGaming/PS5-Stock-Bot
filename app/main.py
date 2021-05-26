@@ -154,12 +154,7 @@ async def scrape():
     await scrape_gamestop()
     await scrape_best_buy()
     await asyncio.sleep(20)
-
-class SpecialCommands(commands.Cog):
-    @commands.command(pass_context=True)
-    async def ping(self, ctx):
-        """Returns the current latency of the bot | Usage: !PS ping"""
-        await ctx.send("Online, Current Latency is " + str(round(client.latency * 1000)) + "ms")
+    bot.get_channel(846905034422878258).send("All Trackers Online")
 
 @bot.event
 async def on_ready():
@@ -170,7 +165,5 @@ async def on_ready():
 async def start(ctx):
     print('[start] start scrape')
     scrape.start()
-
-bot.add_cog(SpecialCommands())
 
 bot.run(token)
