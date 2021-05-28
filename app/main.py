@@ -14,6 +14,7 @@ import random
 target_status = True
 bestbuy_status = True
 gamestop_status = True
+micromania_status = True
 
 load_dotenv()
 
@@ -36,10 +37,11 @@ chrome_driver = os.getcwd() +"/linux_chromedriver"
 driver = webdriver.Chrome(options=opts, executable_path=chrome_driver)
 
 async def update_status(id, in_stock):
+    # US
     channel = bot.get_channel(846860248865177630)
     footer_text = "Please consider subscribing to my Patreon"
     if id == 1:
-        if in_stock != True:
+        if in_stock == False:
             embed=discord.Embed(title="Target", url="https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596", description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
@@ -48,7 +50,7 @@ async def update_status(id, in_stock):
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     elif id == 2:
-        if in_stock != True:
+        if in_stock == False:
             embed=discord.Embed(title="Best Buy", url="https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149", description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
@@ -57,12 +59,24 @@ async def update_status(id, in_stock):
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     elif id == 3:
-        if in_stock != True:
+        if in_stock == False:
             embed=discord.Embed(title="GameStop", url="https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html", description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
         if in_stock == True:
             embed=discord.Embed(title="GameStop", url="https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html", description="PS5s are in stock!", color=discord.Color.green())
+            embed.set_footer(text=footer_text)
+            await channel.send(embed=embed)
+    #FR
+    elif id == 4:
+        channel = bot.get_channel(847929825884766239)
+        footer_text="Pensez à vous abonner à mon Patreon"
+        if in_stock == False:
+            embed=discord.Embed(title="MircoMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Il n'y a actuellement aucune PS5 en stock.", color=0xFF5733)
+            embed.set_footer(text=footer_text)
+            await channel.send(embed=embed)
+        if in_stock == True:
+            embed=discord.Embed(title="MicroMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Les PS5 sont en stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
 
@@ -148,11 +162,40 @@ async def scrape_gamestop():
             await update_status(3, False)
             gamestop_status = False
 
+async def scrape_micromania():
+    global micromania_status
+    print("starting micromania scrape\n\n")
+
+    driver.delete_all_cookies()
+
+    driver.get("https://www.micromania.fr/playstation-5-alldigital-106097.html")
+
+    await asyncio.sleep(5)
+
+    soup_file=driver.page_source
+    soup = BeautifulSoup(soup_file, 'html.parser')
+
+    sold_out = soup.find_all("span", text="Produit disponible en magasin uniquement.")
+
+    print(sold_out)
+
+    if sold_out:
+        print("(MicroMania) IN STOCK!!!!!\n\n")
+        if micromania_status == False:
+            await update_status(4, True)
+            micromania_status = True
+    else:
+        print("(MicroMania) sold out :(\n\n")
+        if micromania_status == True:
+            await update_status(4, False)
+            micromania_status = False
+
 @tasks.loop(seconds=30)
 async def scrape():
     await scrape_target()
     await scrape_gamestop()
     await scrape_best_buy()
+    await scrape_micromania()
     await bot.get_channel(846905034422878258).send("All Trackers Online")
     await asyncio.sleep(20)
 
