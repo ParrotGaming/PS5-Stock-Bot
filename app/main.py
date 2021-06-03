@@ -36,9 +36,14 @@ chrome_driver = os.getcwd() +"/linux_chromedriver"
 
 driver = webdriver.Chrome(options=opts, executable_path=chrome_driver)
 
+driver.set_window_size(1920,1080)
+
 async def update_status(id, in_stock):
     # US
-    channel = bot.get_channel(846860248865177630)
+    if os.getenv("ENVIRONMENT") == 'dev':
+        channel = bot.get_channel(712801808590045296)
+    elif os.getenv("ENVIRONMENT") == 'prod':
+        channel = bot.get_channel(846860248865177630)
     footer_text = "Please consider subscribing to my Patreon"
     if id == 1:
         if in_stock == False:
@@ -69,7 +74,10 @@ async def update_status(id, in_stock):
             await channel.send(embed=embed)
     #FR
     elif id == 4:
-        channel = bot.get_channel(847929825884766239)
+        if os.getenv("ENVIRONMENT") == 'dev':
+            channel = bot.get_channel(847927342462795838)
+        elif os.getenv("ENVIRONMENT") == 'prod':
+            channel = bot.get_channel(847929825884766239)
         footer_text="Pensez à vous abonner à mon Patreon"
         if in_stock == False:
             embed=discord.Embed(title="MircoMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Il n'y a actuellement aucune PS5 en stock.", color=0xFF5733)
@@ -79,6 +87,13 @@ async def update_status(id, in_stock):
             embed=discord.Embed(title="MicroMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Les PS5 sont en stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
+
+async def send_screenshot():
+    driver.save_screenshot("screenshot.png")
+    if os.getenv("ENVIRONMENT") == 'dev':
+        await bot.get_channel(712801808590045296).send(file=discord.File('screenshot.png'))
+    if os.getenv("ENVIRONMENT") == 'prod':
+        await bot.get_channel(849805489654726687).send(file=discord.File('screenshot.png'))
 
 async def scrape_target():
     global target_status
@@ -98,11 +113,13 @@ async def scrape_target():
     if not sold_out:
         print("(Target) IN STOCK!!!!!\n\n")
         if target_status == False:
+            await send_screenshot()
             await update_status(1, True)
             target_status = True
     else:
         print("(Target) sold out :(\n\n")
         if target_status == True:
+            await send_screenshot()
             await update_status(1, False)
             target_status = False
 
@@ -126,11 +143,13 @@ async def scrape_best_buy():
     if sold_out[0].text != "Sold Out":
         print("(BestBuy) IN STOCK!!!!!\n\n")
         if bestbuy_status == False:
+            await send_screenshot()
             await update_status(2, True)
             bestbuy_status = True
     else:
         print("(BestBuy) sold out :(\n\n")
         if bestbuy_status == True:
+            await send_screenshot()
             await update_status(2, False)
             bestbuy_status = False
 
@@ -154,11 +173,13 @@ async def scrape_gamestop():
     if sold_out[0].text != "Not Available":
         print("(GameStop) IN STOCK!!!!!\n\n")
         if gamestop_status == False:
+            await send_screenshot()
             await update_status(3, True)
             gamestop_status = True
     else:
         print("(GameStop) sold out :(\n\n")
         if gamestop_status == True:
+            await send_screenshot()
             await update_status(3, False)
             gamestop_status = False
 
@@ -182,11 +203,13 @@ async def scrape_micromania():
     if sold_out:
         print("(MicroMania) IN STOCK!!!!!\n\n")
         if micromania_status == False:
+            await send_screenshot()
             await update_status(4, True)
             micromania_status = True
     else:
         print("(MicroMania) sold out :(\n\n")
         if micromania_status == True:
+            await send_screenshot()
             await update_status(4, False)
             micromania_status = False
 
@@ -196,7 +219,8 @@ async def scrape():
     await scrape_gamestop()
     await scrape_best_buy()
     await scrape_micromania()
-    await bot.get_channel(846905034422878258).send("All Trackers Online")
+    if os.getenv("ENVIRONMENT") == 'prod':
+        await bot.get_channel(846905034422878258).send("All Trackers Online")
     await asyncio.sleep(20)
 
 @bot.event
