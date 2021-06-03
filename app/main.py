@@ -93,7 +93,7 @@ async def send_screenshot():
     if os.getenv("ENVIRONMENT") == 'dev':
         await bot.get_channel(712801808590045296).send(file=discord.File('screenshot.png'))
     if os.getenv("ENVIRONMENT") == 'prod':
-        await bot.get_channel(849805489654726687).send(file=discord.File('screenshot.png'))
+        await bot.get_channel(846860248865177630).send(file=discord.File('screenshot.png'))
 
 async def scrape_target():
     global target_status
