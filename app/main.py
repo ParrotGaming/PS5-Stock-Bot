@@ -253,10 +253,10 @@ async def scrape_amazon():
 
 @tasks.loop(seconds=30)
 async def scrape():
-    # await scrape_target()
-    # await scrape_gamestop()
-    # await scrape_best_buy()
-    # await scrape_micromania()
+    await scrape_target()
+    await scrape_gamestop()
+    await scrape_best_buy()
+    await scrape_micromania()
     await scrape_amazon()
     if os.getenv("ENVIRONMENT") == 'prod':
         await bot.get_channel(846905034422878258).send("All Trackers Online")
