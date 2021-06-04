@@ -15,6 +15,7 @@ target_status = True
 bestbuy_status = True
 gamestop_status = True
 micromania_status = True
+amazon_status = True
 
 load_dotenv()
 
@@ -70,6 +71,15 @@ async def update_status(id, in_stock):
             await channel.send(embed=embed)
         if in_stock == True:
             embed=discord.Embed(title="GameStop", url="https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html", description="PS5s are in stock!", color=discord.Color.green())
+            embed.set_footer(text=footer_text)
+            await channel.send(embed=embed)
+    elif id == 5:
+        if in_stock == False:
+            embed=discord.Embed(title="Amazon", url="https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG", description="There are currently no PS5s in stock.", color=0xFF5733)
+            embed.set_footer(text=footer_text)
+            await channel.send(embed=embed)
+        if in_stock == True:
+            embed=discord.Embed(title="Amazon", url="https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG", description="PS5s are in stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     #FR
@@ -213,12 +223,41 @@ async def scrape_micromania():
             await update_status(4, False)
             micromania_status = False
 
+async def scrape_amazon():
+    global amazon_status
+    print("starting amazon scrape\n\n")
+
+    driver.delete_all_cookies()
+
+    driver.get("https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG")
+
+    await asyncio.sleep(5)
+    
+    soup_file=driver.page_source
+    soup = BeautifulSoup(soup_file, 'html.parser')
+    
+    sold_out = soup.find_all("span", text="Currently unavailable.")
+
+    if sold_out[0] == None:
+        print("(Amazon) IN STOCK!!!!!\n\n")
+        if amazon_status == False:
+            await send_screenshot()
+            await update_status(5, True)
+            amazon_status = True
+    else:
+        print("(Amazon) sold out :(\n\n")
+        if amazon_status == True:
+            await send_screenshot()
+            await update_status(5, False)
+            amazon_status = False
+
 @tasks.loop(seconds=30)
 async def scrape():
-    await scrape_target()
-    await scrape_gamestop()
-    await scrape_best_buy()
-    await scrape_micromania()
+    # await scrape_target()
+    # await scrape_gamestop()
+    # await scrape_best_buy()
+    # await scrape_micromania()
+    await scrape_amazon()
     if os.getenv("ENVIRONMENT") == 'prod':
         await bot.get_channel(846905034422878258).send("All Trackers Online")
     await asyncio.sleep(20)
