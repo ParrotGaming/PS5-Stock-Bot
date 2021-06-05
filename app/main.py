@@ -11,11 +11,11 @@ import time
 import asyncio
 import random
 
-target_status = True
-bestbuy_status = True
-gamestop_status = True
-micromania_status = True
-amazon_status = True
+target_status = False
+bestbuy_status = False
+gamestop_status = False
+micromania_status = False
+amazon_status = False
 
 load_dotenv()
 
