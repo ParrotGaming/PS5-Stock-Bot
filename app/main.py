@@ -180,7 +180,7 @@ async def scrape_gamestop():
 
     sold_out = soup.find_all("button", {"data-pid": "11108140"})
 
-    if sold_out[0].text != "Not Available":
+    if not sold_out:
         print("(GameStop) IN STOCK!!!!!\n\n")
         if gamestop_status == False:
             await send_screenshot()
@@ -238,7 +238,7 @@ async def scrape_amazon():
     
     sold_out = soup.find_all("span", text="Currently unavailable.")
 
-    if sold_out[0] == None:
+    if not sold_out:
         print("(Amazon) IN STOCK!!!!!\n\n")
         if amazon_status == False:
             await send_screenshot()
