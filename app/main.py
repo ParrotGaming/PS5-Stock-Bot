@@ -17,6 +17,12 @@ gamestop_status = False
 micromania_status = False
 amazon_status = False
 
+target_confirms = 0
+bestbuy_confirms = 0
+gamestop_confirms = 0
+micromania_confirms = 0
+amazon_confirms = 0
+
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
@@ -107,6 +113,7 @@ async def send_screenshot():
 
 async def scrape_target():
     global target_status
+    global target_confirms
     print("starting target scrape\n\n")
 
     driver.delete_all_cookies()
@@ -122,12 +129,15 @@ async def scrape_target():
     
     if not sold_out:
         print("(Target) IN STOCK!!!!!\n\n")
+        target_confirms += 1
         if target_status == False:
-            await send_screenshot()
-            await update_status(1, True)
-            target_status = True
+            if target_confirms >= 2:
+                await send_screenshot()
+                await update_status(1, True)
+                target_status = True
     else:
         print("(Target) sold out :(\n\n")
+        target_confirms = 0
         if target_status == True:
             await send_screenshot()
             await update_status(1, False)
@@ -135,6 +145,7 @@ async def scrape_target():
 
 async def scrape_best_buy():
     global bestbuy_status
+    global bestbuy_confirms
     print("starting best buy scrape\n\n")
 
     driver.delete_all_cookies()
@@ -152,12 +163,15 @@ async def scrape_best_buy():
 
     if sold_out[0].text != "Sold Out":
         print("(BestBuy) IN STOCK!!!!!\n\n")
+        bestbuy_confirms += 1
         if bestbuy_status == False:
-            await send_screenshot()
-            await update_status(2, True)
-            bestbuy_status = True
+            if bestbuy_confirms >= 2:
+                await send_screenshot()
+                await update_status(2, True)
+                bestbuy_status = True
     else:
         print("(BestBuy) sold out :(\n\n")
+        bestbuy_confirms = 0
         if bestbuy_status == True:
             await send_screenshot()
             await update_status(2, False)
@@ -165,6 +179,7 @@ async def scrape_best_buy():
 
 async def scrape_gamestop():
     global gamestop_status
+    global gamestop_confirms
     print("starting gamestop scrape\n\n")
 
     driver.delete_all_cookies()
@@ -182,12 +197,15 @@ async def scrape_gamestop():
 
     if not sold_out:
         print("(GameStop) IN STOCK!!!!!\n\n")
+        gamestop_confirms += 1
         if gamestop_status == False:
-            await send_screenshot()
-            await update_status(3, True)
-            gamestop_status = True
+            if gamestop_confirms >= 2:
+                await send_screenshot()
+                await update_status(3, True)
+                gamestop_status = True
     else:
         print("(GameStop) sold out :(\n\n")
+        gamestop_confirms = 0
         if gamestop_status == True:
             await send_screenshot()
             await update_status(3, False)
@@ -195,6 +213,7 @@ async def scrape_gamestop():
 
 async def scrape_micromania():
     global micromania_status
+    global micromania_confirms
     print("starting micromania scrape\n\n")
 
     driver.delete_all_cookies()
@@ -212,12 +231,15 @@ async def scrape_micromania():
 
     if sold_out:
         print("(MicroMania) IN STOCK!!!!!\n\n")
+        micromania_confirms += 1
         if micromania_status == False:
-            await send_screenshot()
-            await update_status(4, True)
-            micromania_status = True
+            if micromania_confirms >= 2:
+                await send_screenshot()
+                await update_status(4, True)
+                micromania_status = True
     else:
         print("(MicroMania) sold out :(\n\n")
+        micromania_confirms = 0
         if micromania_status == True:
             await send_screenshot()
             await update_status(4, False)
@@ -225,6 +247,7 @@ async def scrape_micromania():
 
 async def scrape_amazon():
     global amazon_status
+    global amazon_confirms
     print("starting amazon scrape\n\n")
 
     driver.delete_all_cookies()
@@ -240,12 +263,15 @@ async def scrape_amazon():
 
     if not sold_out:
         print("(Amazon) IN STOCK!!!!!\n\n")
+        amazon_confirms += 1
         if amazon_status == False:
-            await send_screenshot()
-            await update_status(5, True)
-            amazon_status = True
+            if amazon_confirms >= 2:
+                await send_screenshot()
+                await update_status(5, True)
+                amazon_status = True
     else:
         print("(Amazon) sold out :(\n\n")
+        amazon_confirms = 0
         if amazon_status == True:
             await send_screenshot()
             await update_status(5, False)
