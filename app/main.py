@@ -44,7 +44,7 @@ async def update_status(id, in_stock):
         channel = bot.get_channel(712801808590045296)
     elif os.getenv("ENVIRONMENT") == 'prod':
         channel = bot.get_channel(846860248865177630)
-    footer_text = "Please consider subscribing to my Patreon"
+    footer_text = "https://www.buymeacoffee.com/PS5StockBot"
     if id == 1:
         if in_stock == False:
             embed=discord.Embed(title="Target", url="https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596", description="There are currently no PS5s in stock.", color=0xFF5733)
@@ -87,7 +87,7 @@ async def update_status(id, in_stock):
             channel = bot.get_channel(847927342462795838)
         elif os.getenv("ENVIRONMENT") == 'prod':
             channel = bot.get_channel(847929825884766239)
-        footer_text="Pensez à vous abonner à mon Patreon"
+        footer_text="https://www.buymeacoffee.com/PS5StockBot"
         if in_stock == False:
             embed=discord.Embed(title="MircoMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Il n'y a actuellement aucune PS5 en stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
