@@ -18,9 +18,9 @@ async def scrape_amazon(driver, send_screenshot, update_status, url):
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
     
-    sold_out = soup.find_all("span", text="Currently unavailable.")
+    in_stock = soup.find_all("input", id="add-to-cart-button")
 
-    if not sold_out:
+    if in_stock:
         print("(Amazon) IN STOCK!!!!!\n\n")
         amazon_confirms += 1
         if amazon_status == False:
@@ -28,7 +28,7 @@ async def scrape_amazon(driver, send_screenshot, update_status, url):
                 await send_screenshot()
                 await update_status(5, True)
                 amazon_status = True
-    else:
+    elif not in_stock:
         print("(Amazon) sold out :(\n\n")
         amazon_confirms = 0
         if amazon_status == True:

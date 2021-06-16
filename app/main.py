@@ -16,6 +16,12 @@ from scraping_lib.bestbuy import *
 from scraping_lib.micromania import *
 from scraping_lib.amazon import *
 
+target_url = "https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596"
+gamestop_url = "https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html"
+bestbuy_url = "https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
+micromania_url = "https://www.micromania.fr/playstation-5-alldigital-106097.html"
+amazon_url = "https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG"
+
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
@@ -47,38 +53,38 @@ async def update_status(id, in_stock):
     footer_text = "https://www.buymeacoffee.com/PS5StockBot"
     if id == 1:
         if in_stock == False:
-            embed=discord.Embed(title="Target", url="https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596", description="There are currently no PS5s in stock.", color=0xFF5733)
+            embed=discord.Embed(title="Target", url=target_url, description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
         if in_stock == True:
-            embed=discord.Embed(title="Target", url="https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596", description="PS5s are in stock!", color=discord.Color.green())
+            embed=discord.Embed(title="Target", url=target_url, description="PS5s are in stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     elif id == 2:
         if in_stock == False:
-            embed=discord.Embed(title="Best Buy", url="https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149", description="There are currently no PS5s in stock.", color=0xFF5733)
+            embed=discord.Embed(title="Best Buy", url=bestbuy_url, description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
         if in_stock == True:
-            embed=discord.Embed(title="Best Buy", url="https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149", description="PS5s are in stock!", color=discord.Color.green())
+            embed=discord.Embed(title="Best Buy", url=bestbuy_url, description="PS5s are in stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     elif id == 3:
         if in_stock == False:
-            embed=discord.Embed(title="GameStop", url="https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html", description="There are currently no PS5s in stock.", color=0xFF5733)
+            embed=discord.Embed(title="GameStop", url=gamestop_url, description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
         if in_stock == True:
-            embed=discord.Embed(title="GameStop", url="https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html", description="PS5s are in stock!", color=discord.Color.green())
+            embed=discord.Embed(title="GameStop", url=gamestop_url, description="PS5s are in stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     elif id == 5:
         if in_stock == False:
-            embed=discord.Embed(title="Amazon", url="https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG", description="There are currently no PS5s in stock.", color=0xFF5733)
+            embed=discord.Embed(title="Amazon", url=amazon_url, description="There are currently no PS5s in stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
         if in_stock == True:
-            embed=discord.Embed(title="Amazon", url="https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG", description="PS5s are in stock!", color=discord.Color.green())
+            embed=discord.Embed(title="Amazon", url=amazon_url, description="PS5s are in stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
     #FR
@@ -89,11 +95,11 @@ async def update_status(id, in_stock):
             channel = bot.get_channel(847929825884766239)
         footer_text="https://www.buymeacoffee.com/PS5StockBot"
         if in_stock == False:
-            embed=discord.Embed(title="MircoMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Il n'y a actuellement aucune PS5 en stock.", color=0xFF5733)
+            embed=discord.Embed(title="MircoMania", url=micromania_url, description="Il n'y a actuellement aucune PS5 en stock.", color=0xFF5733)
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
         if in_stock == True:
-            embed=discord.Embed(title="MicroMania", url="https://www.micromania.fr/playstation-5-alldigital-106097.html", description="Les PS5 sont en stock!", color=discord.Color.green())
+            embed=discord.Embed(title="MicroMania", url=micromania_url, description="Les PS5 sont en stock!", color=discord.Color.green())
             embed.set_footer(text=footer_text)
             await channel.send(embed=embed)
 
@@ -106,11 +112,11 @@ async def send_screenshot():
 
 @tasks.loop(seconds=30)
 async def scrape():
-    await scrape_target(driver, send_screenshot, update_status, "https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596")
-    await scrape_gamestop(driver, send_screenshot, update_status, "https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html")
-    await scrape_best_buy(driver, send_screenshot, update_status, "https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149")
-    await scrape_micromania(driver, send_screenshot, update_status, "https://www.micromania.fr/playstation-5-alldigital-106097.html")
-    await scrape_amazon(driver, send_screenshot, update_status, "https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG")
+    await scrape_target(driver, send_screenshot, update_status, target_url)
+    await scrape_gamestop(driver, send_screenshot, update_status, gamestop_url)
+    await scrape_best_buy(driver, send_screenshot, update_status, bestbuy_url)
+    await scrape_micromania(driver, send_screenshot, update_status, micromania_url)
+    await scrape_amazon(driver, send_screenshot, update_status, amazon_url)
     if os.getenv("ENVIRONMENT") == 'prod':
         await bot.get_channel(846905034422878258).send("All Trackers Online")
 
