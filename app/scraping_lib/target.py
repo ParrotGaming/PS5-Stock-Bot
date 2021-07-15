@@ -19,7 +19,7 @@ async def scrape_target(driver, send_screenshot, update_status, url):
     soup_file=driver.page_source
     soup = BeautifulSoup(soup_file, 'html.parser')
 
-    sold_out = soup.find_all("div", {"data-test": "soldOutBlock"})
+    sold_out = soup.find_all("div", {"data-test": "notAvailableForShippingMessage"})
     
     if not sold_out:
         print("(Target) IN STOCK!!!!!\n\n")
