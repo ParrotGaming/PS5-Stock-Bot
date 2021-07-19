@@ -18,7 +18,7 @@ from scraping_lib.amazon import *
 
 target_url = "https://www.target.com/p/playstation-5-digital-edition-console/-/A-81114596"
 gamestop_url = "https://www.gamestop.com/video-games/playstation-5/consoles/products/playstation-5/11108140.html"
-bestbuy_url = "https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
+bestbuy_url = "https://www.bestbuy.com/site/sony-playstation-5-digital-edition-console/6430161.p?skuId=6430161"
 micromania_url = "https://www.micromania.fr/playstation-5-alldigital-106097.html"
 amazon_url = "https://www.amazon.com/PlayStation-5-Console/dp/B08FC5L3RG"
 
